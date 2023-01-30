@@ -1,7 +1,10 @@
-#[derive(Debug)]
-struct ChunkType {
+use crate::{Error, Result};
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ChunkType {
     bytes: [u8; 4],
 }
+
 
 impl ChunkType {
     pub fn bytes(&self) -> [u8; 4] {
@@ -45,11 +48,11 @@ impl std::fmt::Display for ChunkType {
 }
 
 impl std::str::FromStr for ChunkType {
-    type Err = &'static str;
+    type Err = Error;
 
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+    fn from_str(s: &str) -> Result<Self> {
         if s.len() != 4 {
-            return Err("Invalid chunk type");
+            return Err("Invalid chunk type".into());
         }
 
         let bytes = s.as_bytes();
@@ -58,25 +61,20 @@ impl std::str::FromStr for ChunkType {
                 bytes: [bytes[0], bytes[1], bytes[2], bytes[3]],
             })
         } else {
-            Err("Invalid chunk type")
+            Err("Invalid chunk type".into())
         }
     }
 }
 
-impl PartialEq for ChunkType {
-    fn eq(&self, other: &Self) -> bool {
-        self.bytes == other.bytes
-    }
-}
 
 impl TryFrom<[u8; 4]> for ChunkType {
-    type Error = &'static str;
+    type Error = Error;
 
-    fn try_from(bytes: [u8; 4]) -> Result<Self, Self::Error> {
+    fn try_from(bytes: [u8; 4]) -> Result<Self> {
         if bytes.iter().all(|byte| byte.is_ascii_alphabetic()) {
             Ok(ChunkType { bytes })
         } else {
-            Err("Invalid chunk type")
+            Err("Invalid chunk type".into())
         }
     }
 }
@@ -153,7 +151,6 @@ mod tests {
     #[test]
     pub fn test_valid_chunk_is_valid() {
         let chunk = ChunkType::from_str("RuSt").unwrap();
-        // chunk.is_valid();
         assert!(chunk.is_valid());
     }
 
