@@ -1,4 +1,3 @@
-#[warn(unused_imports)]
 use crate::chunk_type::ChunkType;
 use crate::{Error, Result};
 use crc::{Crc, CRC_32_ISO_HDLC};
