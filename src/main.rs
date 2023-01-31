@@ -13,18 +13,18 @@ pub type Result<T> = std::result::Result<T, Error>;
 
 fn main() -> Result<()> {
     let cli = Cli::parse();
-    match &cli.command {
+    match cli.command {
         Encode(args) => {
-            print!("Encoding message: ");
+            commands::encode(args)?;
         }
         Decode(args) => {
-            print!("Decoding message: ");
+            commands::decode(args)?;
         }
         Remove(args) => {
-            print!("Removing chunk: ");
+            commands::remove(args)?;
         }
         Print(args) => {
-            print!("Printing chunks: ");
+            commands::print_chunks(args)?;
         }
     }
         
