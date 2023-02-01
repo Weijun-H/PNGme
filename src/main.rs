@@ -1,15 +1,8 @@
-mod args;
-mod chunk;
-mod chunk_type;
-mod commands;
-mod png;
-
 use clap::{Parser, Subcommand, Args};
-use crate::args::PngMeArgs::{Encode, Decode, Remove, Print};
-use crate::args::Cli;
-
-pub type Error = Box<dyn std::error::Error>;
-pub type Result<T> = std::result::Result<T, Error>;
+use pngme::args::PngMeArgs::{Encode, Decode, Remove, Print};
+use pngme::args::{Cli};
+use pngme::commands;
+use pngme::{Result, Error};
 
 fn main() -> Result<()> {
     let cli = Cli::parse();
@@ -27,6 +20,5 @@ fn main() -> Result<()> {
             commands::print_chunks(args)?;
         }
     }
-        
     Ok(())
 }
